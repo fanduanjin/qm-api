@@ -33,7 +33,7 @@ module.exports = async (ctx, next) => {
         method: 'GetNewCommentList',
         module: 'music.globalComment.CommentReadServer',
         param: {
-            "BizType": 1, //BizType 1单曲 2专辑 5MV
+            "BizType": 1, //BizType 1单曲 2专辑 3歌单 5MV
             "BizId": "",
             "LastCommentSeqNo": "",
             "PageSize": 25,

@@ -10,5 +10,7 @@ export class Mv{
     type
     singers
     url
+    uploadEncuin
+    uploadUin
 }
 

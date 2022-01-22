@@ -58,7 +58,7 @@ module.exports = async (ctx, next) => {
     let data = await parseSongInfo(result.data)
     let lrc = await getSongLrc(songMid)
     let mediaUrl = await getSongMedialUrl(songMid)
-
+    console.log(lrc)
     if (result.code == 0) {
         data.lrc = md5(lrc)
         data.mediaUrl = mediaUrl

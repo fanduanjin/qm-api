@@ -14,7 +14,7 @@ fastify.get('/getSingerAlbumDetail', api.getSingerAlbumDetail)
 fastify.get('/getSingerMvDetail', api.getSingerMvDetail)
 fastify.get('/getComment', api.getSongComment)
 fastify.get('/getReplyComment', api.getReplyComment)
-
+fastify.get('/getFollowList', api.getFollowList)
 const start = async () => {
     await fastify.listen(3000)
     console.log('server started url http://localhost:3000')

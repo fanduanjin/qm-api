@@ -8,6 +8,7 @@ const getSingerAlbumDetail = require('./getSingerAlbumDetail')
 const getSingerMvDetail = require('./getSingerMvDetail')
 const getSongComment = require('./getComment')
 const getReplyComment = require('./getReplyComment')
+const getFollowList = require('./getFollowList')
 module.exports = {
     getSongList,
     getSingerList,
@@ -18,5 +19,6 @@ module.exports = {
     getSingerAlbumDetail,
     getSingerMvDetail,
     getSongComment,
-    getReplyComment
+    getReplyComment,
+    getFollowList
 }

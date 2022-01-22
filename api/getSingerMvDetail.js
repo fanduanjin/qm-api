@@ -8,6 +8,7 @@ const config = {
     mvUrl: 'http://mv.music.tc.qq.com/'
 }
 const parseMvDetailInfo = async (data, mvMid) => {
+
     let mvInfo = data['mvInfo']
     let mvDetailinfo = new Mv()
     let mvDetail = mvInfo.data[mvMid]
@@ -32,6 +33,8 @@ const parseMvDetailInfo = async (data, mvMid) => {
         singer.name = item.name
         mvDetailinfo.singers.push(singer)
     }
+    mvDetailinfo.uploadEncuin = mvDetail.uploader_encuin
+    mvDetailinfo.uploadUin = mvDetail.uploader_uin
     //解析 mvUrl
     let mvUrl = data['mvUrl']
     if (mvUrl.code != 0 || !mvUrl.data)
@@ -78,10 +81,10 @@ module.exports = async (ctx, next) => {
                     //"fileid",
                     //"pay",
                     //"pay_info",
-                    //"uploader_headurl",
-                    //"uploader_nick",
-                    //"uploader_uin",
-                    //"uploader_encuin"
+                    "uploader_headurl",
+                    "uploader_nick",
+                    "uploader_uin",
+                    "uploader_encuin"
                 ]
             }
         },
