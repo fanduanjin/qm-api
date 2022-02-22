@@ -1,9 +1,19 @@
 const api = require('./api/index')
+const path = require('path')
 // 加载框架并新建实例
 const fastify = require('fastify')({
     logger: true
 })
 
+fastify.register(require('fastify-static'), {
+    root: path.join(__dirname, '')
+})
+
+
+fastify.get('/', function (req, reply) {
+    console.log('fsdfasd')
+    return reply.sendFile('index.html') // serving path.join(__dirname, 'public', 'myHtml.html') directly
+})
 fastify.get('/getSongList', api.getSongList)
 fastify.get('/getSingerList', api.getSingerList)
 fastify.get('/getSingerDetail', api.getSingerDetail)

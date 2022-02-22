@@ -6,4 +6,5 @@ var FollowType;
     FollowType[FollowType["Song"] = 1] = "Song";
     FollowType[FollowType["Album"] = 2] = "Album";
     FollowType[FollowType["CdList"] = 3] = "CdList";
+    FollowType[FollowType["Mv"] = 4] = "Mv";
 })(FollowType = exports.FollowType || (exports.FollowType = {}));

@@ -3,7 +3,7 @@ module.exports = {
      */
     getValueByStr(data, fields) {
         if (!data || !fields)
-            return null
+            return data
         var arr = fields.split('.')
         var key = arr.shift();
         var value = data[key];

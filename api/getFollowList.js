@@ -5,6 +5,7 @@ const { FollowType } = require('../enum/FollowType')
 const { Song } = require('../model/Song')
 const { Album } = require('../model/Album')
 const { SongOrder } = require('../model/SongOrder')
+const { Mv } = require('../model/Mv')
 
 const parseSongList = async (songList) => {
     for (let index in songList) {
@@ -42,6 +43,22 @@ const parseSongOrderList = async (songOrders) => {
         songOrders[index] = songOrder
     }
     return songOrders
+}
+
+const parseMvList = async (mvlist) => {
+    for (let index in mvlist) {
+        let item = mvlist[index]
+        let mv = new Mv()
+        mv.mid == item.mid
+        mv.id = item.id
+        mv.name = item.mv_name
+        mv.singers = item.singer
+        mv.uploadEncuin = item.uploader_encuin
+        mv.publicTime = item.publish_date
+        mv.playCount = item.playcount
+        mvlist[index] = mv
+    }
+    return mvlist
 }
 
 
@@ -94,6 +111,16 @@ module.exports = async (ctx, next) => {
             }
             cdList = await parseSongOrderList(cdList)
             result.data = cdList
+            break
+        case FollowType.Mv:
+            url = 'https://c.y.qq.com/mv/fcgi-bin/fcg_get_myfav_mv.fcg?reqtype=1&support=1&cid=205361447&encuin=' +
+                uin + '&num=' + sin + '&pagesize=' + pageSize
+            result = await baseRetryRequest.get(url, { code: 0, subcode: 0 })
+            if (result.code == request.statusCode.success) {
+                result.total = result.data.total
+                //格式化返回模型
+                result.data = await parseMvList(result.data.mvlist)
+            }
             break
         default:
             result = { code: request.statusCode.faild, msg: 'parameter {followType} is faild' }
