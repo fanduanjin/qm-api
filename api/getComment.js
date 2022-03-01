@@ -27,6 +27,7 @@ const parseComment = (data) => {
 
 module.exports = async (ctx, next) => {
     const bizId = ctx.query.bizId
+    const lastSeqNo = String(ctx.query.lastSeqNo)
     if (!bizId)
         return { code: 10003, msg: 'required parameter [bizId]' }
     let api = {
@@ -37,17 +38,18 @@ module.exports = async (ctx, next) => {
             "BizId": "",
             "LastCommentSeqNo": "",
             "PageSize": 25,
-            "PageNum": 0,
+            //"PageNum": 0,
             "FromCommentId": "",
             "WithHot": 0
         }
     }
     api.param.BizId = bizId
-    api.param.PageNum = ctx.query.pageIndex ? ctx.query.pageIndex : 0
+    api.param.LastCommentSeqNo = lastSeqNo
+    //api.param.PageNum = ctx.query.pageIndex ? (ctx.query.pageIndex < 1 ? 0 : ctx.query.pageIndex - 1) : 0
     let result = await retryRequest.get(api)
     if (result.code == 0 && result.data.CommentList.Comments && result.data.CommentList.Comments.length > 0) {
         let comments = await parseComment(result.data.CommentList.Comments)
-        result.total=result.data.CommentList.Total
+        result.total = result.data.CommentList.Total
         result.data = comments
         return result
     } else if (result.code == 0)

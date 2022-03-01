@@ -36,8 +36,8 @@ module.exports = async (ctx, next) => {
     let result = await retryRequest.get(api)
     if (result.code == 0 && result.data.list && result.data.list.length > 0) {
         let mvs = await parseMvs(result.data.list)
-        result.data = mvs
         result.total = result.data.total
+        result.data = mvs
         return result
     }
     else if (result.code == 0)

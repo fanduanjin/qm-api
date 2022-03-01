@@ -81,12 +81,12 @@ module.exports = async (ctx, next) => {
     switch (parseInt(followType)) {
         case FollowType.Song:
             result = await baseRetryRequest.get(url, { code: 0, subcode: 0 }, 'data')
-            result.total = result.data.totalsong
-            let songList = result.data.songlist
-            if (!songList || songList.length == 0) {
-                result.code = request.statusCode.emptyData
-                result.msg = 'result is empty'
+            if (result.code != request.statusCode.success) {
+                result.msg = 'faild'
+                break
             }
+            let songList = result.data.songlist
+            result.total = result.data.totalsong
             songList = await parseSongList(songList)
             result.data = songList
             break
@@ -94,9 +94,9 @@ module.exports = async (ctx, next) => {
             result = await baseRetryRequest.get(url, { code: 0, subcode: 0 }, 'data')
             result.total = result.data.totalalbum
             let albumList = result.data.albumlist
-            if (!albumList || albumList.length == 0) {
-                result.code = request.statusCode.emptyData
-                result.msg = 'result is empty'
+            if (result.code != request.statusCode.success) {
+                result.msg = 'faild'
+                break
             }
             albumList = await parseAlbums(albumList)
             result.data = albumList
@@ -105,9 +105,9 @@ module.exports = async (ctx, next) => {
             result = await baseRetryRequest.get(url, { code: 0, subcode: 0 }, 'data')
             result.total = result.data.totaldiss
             let cdList = result.data.cdlist
-            if (!cdList || cdList.length == 0) {
-                result.code = request.statusCode.emptyData
-                result.msg = 'result is empty'
+            if (result.code != request.statusCode.success) {
+                result.msg = 'faild'
+                break
             }
             cdList = await parseSongOrderList(cdList)
             result.data = cdList

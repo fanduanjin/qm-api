@@ -26,7 +26,7 @@ fastify.get('/getComment', api.getSongComment)
 fastify.get('/getReplyComment', api.getReplyComment)
 fastify.get('/getFollowList', api.getFollowList)
 const start = async () => {
-    await fastify.listen(3000)
+    await fastify.listen(3000,'0.0.0.0')
     console.log('server started url http://localhost:3000')
 }
 start()

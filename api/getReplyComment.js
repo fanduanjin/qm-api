@@ -30,7 +30,8 @@ const parseComment = (data, rootCmId) => {
 
 module.exports = async (ctx, next) => {
     const rootCmId = ctx.query.rootCmId
-    const lastSeqNo = ctx.query.lastSeqNo
+    const lastSeqNo = String(ctx.query.lastSeqNo||"")
+    const lastRankScore = String(ctx.query.lastRankScore||"")
     //const LastRankScore = ctx.query.lastRankScore
     //const RankType = ctx.query.RankType
     if (!rootCmId)
@@ -42,13 +43,14 @@ module.exports = async (ctx, next) => {
             //1!4EynU9ZG8T8DG2U2i-FCyw3xKBdDpEqBEVefdUKTdfa2RtbWcoMJIWlt0SINKwkL
             "RootCmId": "",
             "LastCommentSeqNo": "",
-            "PageSize": 10
-            //"LastRankScore": "0",
-            //"RankType": 0
+            "PageSize": 10,
+            "LastRankScore": "",
+            "RankType": 1
         }
     }
     api.param.RootCmId = rootCmId
     api.param.LastCommentSeqNo = lastSeqNo
+    api.param.LastRankScore = lastRankScore
     let result = await retryRequest.get(api)
     if (result.code == 0 && result.data.CommentList.Comments && result.data.CommentList.Comments.length > 0) {
         let comments = await parseComment(result.data.CommentList.Comments, rootCmId)

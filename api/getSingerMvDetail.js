@@ -1,14 +1,14 @@
-const axios = require('axios')
 const retryRequest = require('../util/retryRequest')
 const request = require('../util/request')
 const qqEncrypt = require('../util/qqEncrypt')
 const { Mv } = require('../model/Mv')
 const { Singer } = require('../model/Singer')
+const baseRetryRequest = require('../util/baseRetryRequest')
 const config = {
     mvUrl: 'http://mv.music.tc.qq.com/'
 }
 const parseMvDetailInfo = async (data, mvMid) => {
-
+    console.log(JSON.stringify(data))
     let mvInfo = data['mvInfo']
     let mvDetailinfo = new Mv()
     let mvDetail = mvInfo.data[mvMid]
@@ -98,28 +98,14 @@ module.exports = async (ctx, next) => {
     }
     api.mvInfo.param.vidlist.push(mvMid)
     api.mvUrl.param.vids.push(mvMid)
-    let retryIndex = 0;
-    let result
-    do {
-        url = axios.defaults.baseURL
-        api.comm = request.getCommParam()
-        let data = JSON.stringify(api)
-        url += 'sign=' + qqEncrypt.sign(data)
-        result = await axios.post(url, data)
-
-        if (result.code != 0) {
-            retryIndex++
-            continue
-        }
-        let mvDetailinfo = await parseMvDetailInfo(result.data, mvMid)
-        if (mvDetailinfo)
-            return { code: 0, msg: 'successful', data: mvDetailinfo }
-        else {
-            retryIndex++
-            result = { code: -1, msg: 'faild' }
-        }
-
-    } while (retryIndex < retryRequest.config.retryCount)
+    url = request.signRequest.defaults.baseURL
+    api.comm = request.getCommParam()
+    let data = JSON.stringify(api)
+    url += 'sign=' + qqEncrypt.sign(data)
+    let result = await baseRetryRequest.post(url, data)
+    if (result.code == 0) {
+        result.data = await parseMvDetailInfo(result.data, mvMid)
+    }
     return result
 }
 
